@@ -1,14 +1,18 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const rootPath = process.cwd()
-const distPath = path.join(rootPath, 'dist')
-const srcPath = path.join(rootPath, 'src')
+const rootPath = process.cwd();
+const distPath = path.join(rootPath, 'docs');
+const srcPath = path.join(rootPath, 'src');
 
 const ATTRIBUTES_TO_EXPAND = [
-  'src', 'gltf-model', 'cover-image-url', 'footer-image-url', 'watermark-image-url',
-]
+  'src',
+  'gltf-model',
+  'cover-image-url',
+  'footer-image-url',
+  'watermark-image-url',
+];
 
 const makeJsLoader = () => ({
   test: /\.js$/,
@@ -20,30 +24,30 @@ const makeJsLoader = () => ({
     },
   },
   exclude: /node_modules/,
-})
+});
 
 const makeTsLoader = () => ({
   test: /\.ts$/,
   loader: 'ts-loader',
   exclude: /node_modules/,
-})
+});
 
 const makeCssLoader = () => ({
   test: /\.css$/,
   exclude: /\/assets\//,
   use: ['style-loader', 'css-loader'],
-})
+});
 
 const makeSassLoader = () => ({
   test: /\.scss$/,
   use: ['style-loader', 'css-loader', 'sass-loader'],
-})
+});
 
 const makeAssetLoader = () => ({
   test: /\..*$/,
   include: [path.join(srcPath, 'assets')],
   loader: path.join(__dirname, 'asset-loader.js'),
-})
+});
 
 const makeDefaultHtmlLoader = () => ({
   test: /\.html$/,
@@ -60,7 +64,7 @@ const makeDefaultHtmlLoader = () => ({
             type: 'src',
             filter: () => false,
           },
-          ...ATTRIBUTES_TO_EXPAND.map(attr => ({
+          ...ATTRIBUTES_TO_EXPAND.map((attr) => ({
             tag: '*',
             attribute: attr,
             type: 'src',
@@ -69,7 +73,7 @@ const makeDefaultHtmlLoader = () => ({
       },
     },
   },
-})
+});
 
 const config = {
   entry: path.join(srcPath, 'app.js'),
@@ -104,7 +108,7 @@ const config = {
       ],
     }),
   ],
-  resolve: {extensions: ['.ts', '.js']},
+  resolve: { extensions: ['.ts', '.js'] },
   module: {
     rules: [
       makeJsLoader(),
@@ -125,7 +129,8 @@ const config = {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+      'Access-Control-Allow-Headers':
+        'X-Requested-With, content-type, Authorization',
     },
     client: {
       overlay: {
@@ -134,6 +139,6 @@ const config = {
       },
     },
   },
-}
+};
 
-module.exports = config
+module.exports = config;
